@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<script type="text/javascript" src="http://unpkg.com/brain.js@1.1.2/browser.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+
+
+
+<title>Create java script elements</title>
+</head>
+
+<body>
+    <!-- insert goodies here -->
+</body>
+<script type="text/javascript">
+
+    function somefunc2(data ){ 
+        console.log("And away we go: ", data );
+    }
+        async function wrapperFunc() {
+            try {
+                let r1 = await axios.get(`https://fast-beach-22852.herokuapp.com/doors`).then(x=>{
+      console.log("ok?",x)
+    });
+                let r2 = await someFunc2(r1);
+                // now process r2
+                return someValue;     // this will be the resolved value of the returned promise
+            } catch(e) {
+                console.log("Error: ", e);
+                throw e;      // let caller know the promise was rejected with this reason
+            }
+        }
+
+        wrapperFunc().then(result => {
+            console.log("Final result: ", result)
+        }).catch(err => {
+            // got error
+            alert("Danger Will Robinson!!!");
+        });
+      
+
+</script>
+</html>

@@ -1,7 +1,7 @@
 (function () {
     console.log("index_funcs my funky friend...");
 
-    const url = "tag-funcs.js"
+    const url = "promise-funcs.js"
 
     var script = document.createElement("script");  // create a script DOM node
     script.src = url;  // set its src to the provided URL
@@ -11,7 +11,17 @@
 
     window.onload = function() {
 
-            adObj = getArticles(getIAB());
+          //getArticles(getIAB());
+ //promise goes here..
+
+    adObj = getArticles(getIAB()).then(result => {
+            console.log("Final result: ", result);
+            displayAd(result);
+        }).catch(err => {
+            // got error
+            alert("Danger Will Robinson!!!");
+        });
+
 
             console.log("Final ad object: ", adObj);
             return displayAd(adObj);

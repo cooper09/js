@@ -1,0 +1,165 @@
+<html>
+<head>
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <script type="text/javascript" src="decision-tree.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+    <h3>Simple App Selector</h3>
+    <p>Paste in data from spreadsheet and the decision tree will determine if it should be bought or not.</p>
+    <br/>
+    <p>For example: Identifier: A-591560124 , Number of requests: 50342628, Ecpm: 0.89 </p>
+        <br/><br/>
+        <form id="myform">
+            <label for="indentifier">Indentifier:</label>
+            <input type="text"  id="text1" name="identifier" size="45"/>
+
+            <label for="requests">Number of requests:</label>
+            <input type="text"  id="text2" name="requests" />
+
+            <label for="ecpm">Ecpm:</label>
+            <input type="text"  id="text3" name="ecpm" />
+            <button name="submit" label="submit" onclick="clicked(event)" >Submit</button>
+        </form>
+        <br/><br/>
+        <div id="testingItem"></div>
+        <br/>
+        <b>Decision Tree prediction:</b>
+        <div id="decisionTreePrediction"></div>
+        <br/>
+        <b>Random Forest prediction:</b>
+        <div id="randomForestPrediction"></div>
+        <br/>
+        <b>Decision Tree:</b>
+        <br/>
+        
+        <div class="tree" id="displayTree"></div>
+<script>
+    // Training set
+var data = 
+    [{person: 'Homer', hairLength: 0, weight: 250, age: 36, sex: 'male'},
+     {person: 'Marge', hairLength: 10, weight: 150, age: 34, sex: 'female'},
+     {person: 'Bart', hairLength: 2, weight: 90, age: 10, sex: 'male'},
+     {person: 'Lisa', hairLength: 6, weight: 78, age: 8, sex: 'female'},
+     {person: 'Maggie', hairLength: 4, weight: 20, age: 1, sex: 'female'},
+     {person: 'Abe', hairLength: 1, weight: 170, age: 70, sex: 'male'},
+     {person: 'Selma', hairLength: 8, weight: 160, age: 41, sex: 'female'},
+     {person: 'Otto', hairLength: 10, weight: 180, age: 38, sex: 'male'},
+     {person: 'Krusty', hairLength: 6, weight: 200, age: 45, sex: 'male'}];
+
+</script>
+<script>
+    function clicked() {
+        console.log("I'm clicked: ",  );
+        event.preventDefault();
+
+
+
+        var frm_element = document.getElementById('myform').value;
+        var txt1_element = document.getElementById('text1').value;
+        var txt2_element = Number(document.getElementById('text2').value);
+        var txt3_element = Number(document.getElementById('text3').value);
+
+        if (txt1_element.trim() == '')
+            {
+                alert ('Please enter an App identifier');
+            }
+     
+        if (txt2_element == '')
+            {
+                alert ('Please enter Number of Requests');
+            }
+        
+        if (txt3_element == '')
+            {
+                alert ('Please enter Ecpm');
+            }
+     
+     
+        console.log( "Form: " + txt1_element );
+        console.log( "How about this " + txt2_element);
+        console.log( "text 3: " + txt3_element)
+
+
+var mydata = 
+    [{Identifier: '591560124', Request: 50342628, Ecpm: 0.89, buy: "yes" },
+    {Identifier: 'A-429610587', Request: 5870329, Ecpm: 1.36, buy: "no" },
+    {Identifier: 'A-593715088', Request: 1715582, Ecpm: 2.33, buy: "yes" },
+    {Identifier: 'A-sh.whisper', Request: 1684281, Ecpm: 1, buy: "yes" },
+    {Identifier: 'A-mbinc12.mb32b', Request: 1517738, Ecpm: 1.07, buy: "no" },
+    {Identifier: 'A-com.jiubang.go.music', Request: 588770, Ecpm: 15.56, buy: "yes" },
+    {Identifier: 'A-1163798425', Request: 494040, Ecpm: 1.94, buy: "yes" },
+    {Identifier: 'A-com.jb.gosms', Request: 167367, Ecpm: 20.35, buy: "no" },
+    {Identifier: 'A-com.atejapps.cleanerextremelite', Request: 133177, Ecpm: 0.4, buy: "no" },
+    {Identifier: 'A-com.brainium.sudoku.free', Request: 21956, Ecpm: 3.27, buy: "yes" }];
+
+// Configuration
+var config = {
+    trainingSet: mydata, 
+    categoryAttr: 'buy', 
+    ignoredAttributes: ['Identifier']
+};
+// Building Decision Tree
+var decisionTree = new dt.DecisionTree(config);
+
+// Building Random Forest
+var numberOfTrees = 3;
+var randomForest = new dt.RandomForest(config, numberOfTrees);
+
+// Testing Decision Tree and Random Forest
+//var comic = {person: 'Comic guy', hairLength: 8, weight: 290, age: 38};
+//var comic =  {Identifier: 'A-com.formationapps.babygirl', Request: 14746, Ecpm: 10.82 };
+
+var comic =  {Identifier:  txt1_element , Request: txt2_element , Ecpm: txt3_element  };
+
+var decisionTreePrediction = decisionTree.predict(comic);
+var randomForestPrediction = randomForest.predict(comic);
+
+// Displaying predictions
+document.getElementById('testingItem').innerHTML = JSON.stringify(comic, null, 0);
+document.getElementById('decisionTreePrediction').innerHTML = JSON.stringify(decisionTreePrediction, null, 0);
+document.getElementById('randomForestPrediction').innerHTML = JSON.stringify(randomForestPrediction, null, 0);
+
+// Displaying Decision Tree
+document.getElementById('displayTree').innerHTML = treeToHtml(decisionTree.root);
+
+
+// Recursive (DFS) function for displaying inner structure of decision tree
+function treeToHtml(tree) {
+    // only leafs containing category
+    if (tree.category) {
+        return  ['<ul>',
+                    '<li>',
+                        '<a href="#">',
+                            '<b>', tree.category, '</b>',
+                        '</a>',
+                    '</li>',
+                 '</ul>'].join('');
+    }
+    
+    return  ['<ul>',
+                '<li>',
+                    '<a href="#">',
+                        '<b>', tree.attribute, ' ', tree.predicateName, ' ', tree.pivot, ' ?</b>',
+                    '</a>',
+                    '<ul>',
+                        '<li>',
+                            '<a href="#">yes</a>',
+                            treeToHtml(tree.match),
+                        '</li>',
+                        '<li>', 
+                            '<a href="#">no</a>',
+                            treeToHtml(tree.notMatch),
+                        '</li>',
+                    '</ul>',
+                '</li>',
+             '</ul>'].join('');
+        }
+}
+</script>
+</body>
+</html>

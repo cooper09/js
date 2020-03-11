@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<script type="text/javascript" src="http://unpkg.com/brain.js@1.1.2/browser.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
+<title>Google Maps - Reverse GeoCoding</title>
+</head>
+
+<body>
+    <!-- insert goodies here -->
+    Map me, baby!
+</body>
+<script type="text/javascript">
+  const KEY="AIzaSyAYzBB0nQXLqSSu2pgpCEcbWys39KG9Stk";
+  const LAT = 40.8265;
+  const LNG = -73.9383;
+  let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${LAT},${LNG}&key=${KEY}`
+  //let url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=AIzaSyAoWdk5JoGjkscocdHhTJt-GzE_nBUh2F8'
+
+
+  fetch(url)
+    .then(response => response.json())
+    .then( data => {
+      console.log("result: ", data );
+    })
+    .catch(err => consoloe.log("ERROR: ", err.message ))
+
+</script>
+</html>

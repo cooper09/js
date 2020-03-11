@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<script type="text/javascript" src="http://unpkg.com/brain.js@1.1.2/browser.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+
+<title>Create java script elements</title>
+</head>
+
+<body><form action=""></form>
+    <!-- insert goodies here -->
+</body>
+<script type="text/javascript">
+
+async function getData () {
+    console.log("getData...");
+
+    var xhttp = new XMLHttpRequest()
+    xhttp.onreadystatechange = function(){
+        if ( this.readyState == 4 && this.status == 200 ) {
+            console.log("getData response: ", JSON.parse(this.response) );
+            //return JSON.parse(this.response);
+            return "Here's our data...";
+        }
+    }//end xttp call
+
+    xhttp.open("GET", "https://sleepy-everglades-99189.herokuapp.com/multiline_facebook_conversions", true)
+    xhttp.send();
+    
+  //  return "Here's our data...";
+}//end someasynccall
+
+/*
+getData ()
+    .then(function(result) {
+        console.log('result', result)
+        return 'successful'
+    })
+    .catch(function(error) {
+        console.log(error)
+        return 'failed'
+    })
+    .then(console.log)
+*/
+async function func(){
+    try{
+        const result = await getData()
+            .then(function(result) {
+                console.log('inner result', result)
+                return 'successful'
+            })
+            .catch(function(error) {
+                console.log(error)
+                return 'failed'
+            })
+            .then(console.log);
+
+    //    console.log('result: ',result);
+    //    return result;
+    }
+   catch(error){
+     console.log("Oops! ", error);
+     return 'failed'; 
+   } 
+}
+
+(async function(){
+ const message = await func();
+ console.log("And the message is: " ,message);
+})();
+</script>
+</html>

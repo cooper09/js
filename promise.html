@@ -16,24 +16,26 @@
 </body>
 <script type="text/javascript">
 
-    function somefunc2(data ){ 
-        console.log("And away we go: ", data );
-    }
-        async function wrapperFunc() {
+    async function wrapperFunc() {
             try {
-                let r1 = await axios.get(`https://fast-beach-22852.herokuapp.com/doors`).then(x=>{
+                //var url = 'https://sleepy-everglades-99189.herokuapp.com/multiline_facebook_conversions';
+                let r1 = await axios.get('https://sleepy-everglades-99189.herokuapp.com/multiline_facebook_conversions').then(x=>{
       console.log("ok?",x)
     });
-                let r2 = await someFunc2(r1);
+        const r2 = await someFunc2(r1);
                 // now process r2
-                return someValue;     // this will be the resolved value of the returned promise
+                return r1;     // this will be the resolved value of the returned promise
             } catch(e) {
                 console.log("Error: ", e);
                 throw e;      // let caller know the promise was rejected with this reason
             }
-        }
 
-        wrapperFunc().then(result => {
+            async function someFunc2(data ){ 
+                console.log("And away we go: ", data );
+            }//end somefunc2
+        }//end wrapperfunc
+
+        await wrapperFunc().then(result => {
             console.log("Final result: ", result)
         }).catch(err => {
             // got error

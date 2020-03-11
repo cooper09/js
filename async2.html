@@ -14,15 +14,91 @@
 </body>
 <script type="text/javascript">
 
-function myAsync() { (resolve, reject) => {
-    return setTimeout(function(){ 
-            console.log("asnync function " )
-            resolve( "Hello out there...");
-        }, 3000);
-    }
-    return new Promise 
-} //end function
+async function someasynccall () {
+    console.log("someasynccall in the house...");
+    return "someasynccall";
+}//end someasynccall
 
-const result = myAsync()
+    async function trackMe (parent, hash) {
+		console.log("Track me: ", parent ," hash: ", hash );
+		alert("TrackMe - hash: "+ hash )
+		var timeStamp = new Date();
+
+        var goal ="BMT Weiser Google Search";
+		var source2 = window.parent.navigator.vendor;
+
+        var dataObj = {
+            hash: hash,
+            source: parent,
+			source2: source2,
+			description: goal,
+            timestamp: timeStamp
+        }
+		
+		var http = new XMLHttpRequest();
+		var url = 'https://sleepy-everglades-99189.herokuapp.com/sale';
+
+		var params = 'hash='+ dataObj.hash+'&source='+parent+'&category='+source2+'&description='+dataObj.description+'&timestamp='+dataObj.timestamp;
+
+		http.open('POST', url, true);
+
+		//Send the proper header information along with the request
+		http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+		http.onreadystatechange = function() {//Call a function when the state changes.
+			if(http.readyState == 4 && http.status == 200) {
+				console.log("Update data: " + http.responseText); 
+				return http.response;
+			} else {
+				console.log("Failed - Update data: " + http.status);
+			}
+		}//end state change
+		http.send(params);
+            
+    }//end trackMe
+
+    function func(parent, hash ){ 
+    
+    return new Promise ( (resolve, reject) =>{
+        setTimeout(()=>{
+            console.log("Get the func out my face: ", parent )
+
+            const err = false;
+
+            if (!err) {
+                resolve();
+                return "Melba Toast"
+            } else {
+                reject("errror: ", err )
+            }
+            return "Melba Toast"
+        }, 2000)
+    }) 
+ /*   try{
+        const result = await trackMe('stinky','000').then;
+        console.log('func() - result: ',result);
+        console.trace('The wonderful wizard of oz')
+        return 'successful: '+ result; //'successful';
+    }
+   catch(error){
+     console.log(error);
+     return 'failed'; 
+   }  */
+}// func()
+
+(async () => {
+
+console.log("start...")
+
+ const message = await func("stinky","000").then( message =>{
+    console.log("TrackMe returned 2: ", message )
+    trackMe("hula", "hoop")
+ })
+ console.log("TrackMe returned 1: ", message )
+ 
+ //func(message);
+
+
+})();
 </script>
-</html>
+</html

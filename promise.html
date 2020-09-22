@@ -13,17 +13,23 @@
 
 <body>
     <!-- insert goodies here -->
+    TEST
 </body>
 <script type="text/javascript">
 
     async function wrapperFunc() {
+        console.log("Wrap me, baby!")
             try {
-                //var url = 'https://sleepy-everglades-99189.herokuapp.com/multiline_facebook_conversions';
-                let r1 = await axios.get('https://sleepy-everglades-99189.herokuapp.com/multiline_facebook_conversions').then(x=>{
-      console.log("ok?",x)
-    });
+                const r1 = await axios.get('https://sleepy-everglades-99189.herokuapp.com/tracks').then(x=>{
+                console.log("Address Data: ",x)
+    
+                const r2 = await someFunc2(r1);
+               // console.log("somefunc results: ", r2)
+    
+            });
         const r2 = await someFunc2(r1);
                 // now process r2
+                console.log("Somefunc: ", r1)
                 return r1;     // this will be the resolved value of the returned promise
             } catch(e) {
                 console.log("Error: ", e);
@@ -35,13 +41,16 @@
             }//end somefunc2
         }//end wrapperfunc
 
+    async function stinky() {
+        console.log("Lets go...")
         await wrapperFunc().then(result => {
             console.log("Final result: ", result)
         }).catch(err => {
             // got error
             alert("Danger Will Robinson!!!");
         });
-      
+    }
+    stinky();
 
 </script>
 </html>
